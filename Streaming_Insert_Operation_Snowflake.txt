@@ -1,0 +1,35 @@
+-- Create a table to store the details of products
+create or replace table products_transactions(product_id varchar,
+                                             product_vendor varchar,
+                                             product_price number,
+                                             product_quantity number);
+
+-- Create the Consumer stream Table
+create or replace table products_consumer   (product_id varchar,
+                                             product_vendor varchar,
+                                             product_price number,
+                                             product_quantity number);
+                                             
+                                           
+
+-- Create a stream to track changes to data in the products table
+create or replace stream products_stream on table products_transactions;  
+
+-- insert values in products table
+insert into products_transactions values('LAPTOP','DELL',20000,10),
+                                       ('LAPTOP','HP',50000,9),
+                                       ('MOBILE','SAMSUNG',30000,5),
+                                       ('MOBILE','NOKIA',10000,5),
+                                       ('TAB','SAMSUNG',35000,9);
+
+-- The stream records the inserted rows
+select * from products_stream;
+
+
+                   
+Insert into products_consumer select product_id,product_vendor,product_price,product_quantity from products_stream;
+
+select * from products_consumer;
+
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('products_stream')) as stream_offset;
