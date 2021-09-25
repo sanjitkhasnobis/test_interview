@@ -1,3 +1,5 @@
+--Change to test pool request
+
 -- Create a table to store the details of products
 create or replace table products_transactions(product_id varchar,
                                              product_vendor varchar,
